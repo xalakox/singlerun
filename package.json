@@ -1,0 +1,25 @@
+{
+  "name": "singlerun",
+  "version": "0.0.0",
+  "description": "Make sure an instance of the current script only runs once.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xalakox/singlerun.git"
+  },
+  "keywords": [
+    "pid",
+    "file",
+    "instance",
+    "ps"
+  ],
+  "author": "Salvador Aceves",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xalakox/singlerun/issues"
+  },
+  "homepage": "https://github.com/xalakox/singlerun"
+}
