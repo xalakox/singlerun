@@ -4,7 +4,7 @@ describe 'Pid Creation', ->
 	it 'should create a pid file', (done)->
 		console.log "here..."
 		require('child_process').exec __dirname + '/../index.coffee', (err, stdout, sdterr)->
-			console.log "process exited ..", err, stdout
+			console.log "process exited ..", err, stdout, stderr
 			done()
 		setTimeout ->
 			console.log "waited for process.."

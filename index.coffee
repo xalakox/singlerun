@@ -7,8 +7,7 @@ doPid = ([killother, includeparams]..., callback)->
 	delpid = true
 	fs = require "fs"
 	leargs = ""
-	leargs+=val+":"+index for val, index of process.argv
-
+	leargs+=i+":"+arg for arg,i in process.argv when arg isnt "coffee" and arg isnt "node" and arg isnt __filename 
 	pidfile = __dirname + "/" + __filename.split('/').pop() + (new Buffer(leargs).toString('base64')) + '.pid'
 
 	console.log "args : ", leargs
