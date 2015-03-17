@@ -7,9 +7,9 @@ doPid = ([killother, includeparams]..., callback)->
 	delpid = true
 	fs = require "fs"
 	leargs = ""
-	leargs+=i+":"+arg for arg,i in process.argv when arg isnt "coffee" and arg isnt "node" and arg isnt __filename 
+	leargs+=arg for arg,i in process.argv when arg isnt "coffee" and arg isnt "node" and arg isnt __filename 
 	pidfile = __dirname + "/" + __filename.split('/').pop() + (new Buffer(leargs).toString('base64')) + '.pid'
-
+	console.log (new Buffer(leargs).toString('base64'))
 	console.log "args : ", leargs
 	process.on 'exit', (code) ->
 		if fs.existsSync(pidfile) and delpid

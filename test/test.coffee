@@ -1,20 +1,35 @@
 
 assert = require "assert"
 describe 'Pid Creation', ->
+	argument_base64 = (new Buffer("--testargument").toString('base64'))
 	it 'should create a pid file', (done)->
-		console.log "here..."
 		require('child_process').exec __dirname + '/../index.coffee', (err, stdout, sdterr)->
-			console.log "process exited ..", err, stdout, stderr
-			done()
+			throw err if err
 		setTimeout ->
-			console.log "waited for process.."
 			require('fs').exists __dirname + '/../index.coffee.pid', (exists)->
-				console.log "exits", exists
 				assert.equal true, exists
+				done()
 		,500
+	it 'should erase the pid file', (done)->
+		setTimeout ->
+			require('fs').exists __dirname + '/../index.coffee.pid', (exists)->
+					assert.equal false, exists
+					done()
+		,1000
 	it 'should create a pid with arguments', (done)->
-		argument_base64 = (new Buffer("--testargument").toString('base64'))
-		done()
+		require('child_process').exec __dirname + '/../index.coffee --testargument', (err, stdout, sdterr)->
+			throw err if err
+		setTimeout ->
+			require('fs').exists __dirname + '/../index.coffee'+argument_base64+'.pid', (exists)->
+				assert.equal true, exists
+				done()
+		,500
+	it 'should erase the pid file with arguments', (done)->
+		setTimeout ->
+			require('fs').exists __dirname + '/../index.coffee'+argument_base64+'.pid', (exists)->
+				assert.equal false, exists
+				done()
+		,1000
 		
   describe '#indexOf()', ->
     it 'should return -1 when the value is not present', ->
