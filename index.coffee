@@ -2,12 +2,12 @@
 
 doPid = ([killother, includeparams]..., callback)->
 	killother ?= false
-	includeparams ?= false
+	includeparams ?= true
 	# process and stuff (stick to 1 instance per execution)
 	delpid = true
 	fs = require "fs"
 	leargs = ""
-	leargs+=arg for arg,i in process.argv when arg isnt "coffee" and arg isnt "node" and arg isnt __filename 
+	leargs+=arg for arg,i in process.argv when arg isnt "coffee" and arg isnt "node" and arg isnt __filename if includeparams
 	pidfile = __dirname + "/" + __filename.split('/').pop() + (new Buffer(leargs).toString('base64')) + '.pid'
 	console.log (new Buffer(leargs).toString('base64'))
 	console.log "args : ", leargs
@@ -33,7 +33,7 @@ doPid = ([killother, includeparams]..., callback)->
 			if data?
 				isrunning data,(isit)->
 					if isit
-						console.log 'Yuma IS already running'
+						console.log __filename +' IS already running'
 						process.exit 1
 					else
 						console.log '%s Process not found, running it (and removing pid in proces)', data
