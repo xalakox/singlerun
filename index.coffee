@@ -8,7 +8,9 @@ doPid = ([killother, includeparams]..., callback)->
 	fs = require "fs"
 	leargs = ""
 	leargs+=arg for arg,i in process.argv when arg isnt "coffee" and arg isnt "node" and arg isnt __filename if includeparams
-	pidfile = __dirname + "/" + __filename.split('/').pop() + (new Buffer(leargs).toString('base64')) + '.pid'
+	path = process.env[if (process.platform == 'win32') then 'USERPROFILE' else 'HOME'] + "/.singlerun"
+	fs.mkdirSync(path) if !fs.existsSync(path)
+	pidfile = path + "/" + __filename.split('/').pop() + (new Buffer(leargs).toString('base64')) + '.pid'
 	console.log (new Buffer(leargs).toString('base64'))
 	console.log "args : ", leargs
 	process.on 'exit', (code) ->
@@ -18,7 +20,7 @@ doPid = ([killother, includeparams]..., callback)->
 			return
 
 	isrunning = (pid, callback)->
-		require('child_process').exec 'ps -A -o pid', (error, stdout, stderr)->
+		require('child_process').exec 'ps auwx -o pid', (error, stdout, stderr)->
 			if error
 				#console.log cmdline, error, stdout, stderr
 				throw new Error (error)
@@ -34,7 +36,9 @@ doPid = ([killother, includeparams]..., callback)->
 				isrunning data,(isit)->
 					if isit
 						console.log __filename +' IS already running'
-						process.exit 1
+						process.exit 1 unless killother
+						console.log "killing process", data
+						process.kill data, 9
 					else
 						console.log '%s Process not found, running it (and removing pid in proces)', data
 						cback()
