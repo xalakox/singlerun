@@ -1,5 +1,6 @@
 #!/usr/bin/env coffee
-doPid = ([killother, includeparams]..., callback)->
+doPid = ([killother, includeparams, debug]..., callback)->
+	debug ?= false
 	killother ?= false
 	includeparams ?= true
 	# process and stuff (stick to 1 instance per execution)
@@ -10,8 +11,8 @@ doPid = ([killother, includeparams]..., callback)->
 	path = process.env[if (process.platform == 'win32') then 'USERPROFILE' else 'HOME'] + "/.singlerun"
 	fs.mkdirSync(path) if !fs.existsSync(path)
 	pidfile = path + "/" + __filename.split('/').pop() + (new Buffer(leargs).toString('base64')) + '.pid'
-	console.log (new Buffer(leargs).toString('base64'))
-	console.log "args : ", leargs
+	console.log (new Buffer(leargs).toString('base64')) if debug
+	console.log "args : ", leargs if debug
 	process.on 'exit', (code) ->
 		if fs.existsSync(pidfile) and delpid
 			console.log 'Removing pid file..'
@@ -52,19 +53,17 @@ doPid = ([killother, includeparams]..., callback)->
 			# just in case
 			fs.writeFile pidfile, process.pid, { encoding: 'utf8' }, (err) ->
 				throw err if err
-				console.log 'created ', pidfile
+				console.log 'created ', pidfile if debug
 				callback()
 
 
 
 if !module.parent
-	console.log "here ..."
-	doPid false,true,->
+	doPid false,true,true, ->
 		console.log "running"
 		setTimeout ->
 			console.log "not anymore"
 			process.exit 0
 		,1000
 else
-	console.log "there ..."
 	exports = module.exports = doPid
