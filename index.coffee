@@ -1,5 +1,4 @@
 #!/usr/bin/env coffee
-
 doPid = ([killother, includeparams]..., callback)->
 	killother ?= false
 	includeparams ?= true
@@ -59,6 +58,7 @@ doPid = ([killother, includeparams]..., callback)->
 
 
 if !module.parent
+	console.log "here ..."
 	doPid false,true,->
 		console.log "running"
 		setTimeout ->
@@ -66,4 +66,5 @@ if !module.parent
 			process.exit 0
 		,1000
 else
-    exports = doPid
+	console.log "there ..."
+	exports = module.exports = doPid
