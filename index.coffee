@@ -20,7 +20,7 @@ doPid = ([killother, includeparams, debug]..., callback)->
 			return
 
 	isrunning = (pid, callback)->
-		require('child_process').exec 'ps auwx -o pid', (error, stdout, stderr)->
+		require('child_process').exec 'ps -A -o pid', (error, stdout, stderr)->
 			if error
 				#console.log cmdline, error, stdout, stderr
 				throw new Error (error)
