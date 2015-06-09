@@ -35,7 +35,7 @@ doPid = ([killother, includeparams, debug]..., callback)->
 			if data?
 				isrunning data,(isit)->
 					if isit
-						console.log __filename +' IS already running'
+						console.log __filename + ' IS already running'
 						process.exit 1 unless killother
 						console.log "killing process", data
 						process.kill data, 9
