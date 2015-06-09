@@ -15,7 +15,7 @@ doPid = ([killother, includeparams, debug]..., callback)->
 	console.log "args : ", leargs if debug
 	process.on 'exit', (code) ->
 		if fs.existsSync(pidfile) and delpid
-			console.log 'Removing pid file..'
+			console.log 'Removing pid file..' if debug
 			fs.unlinkSync pidfile
 			return
 
@@ -24,7 +24,7 @@ doPid = ([killother, includeparams, debug]..., callback)->
 			if error
 				#console.log cmdline, error, stdout, stderr
 				throw new Error (error)
-			callback (stdout.split("\n").indexOf(pid) isnt -1)
+			callback (stdout.split("\n").map((el)->return el.replace(/ /g,"")).indexOf(pid) isnt -1)
 
 	check = (cback)->
 		if fs.existsSync(pidfile)
