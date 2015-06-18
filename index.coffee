@@ -38,7 +38,7 @@ doPid = ([killother, includeparams, debug]..., callback)->
 						console.log __filename + ' IS already running'
 						process.exit 1 unless killother
 						console.log "killing process", data
-						process.kill data, 9
+						process.kill data
 					else
 						console.log '%s Process not found, running it (and removing pid in proces)', data
 						cback()
