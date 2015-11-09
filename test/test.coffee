@@ -1,18 +1,19 @@
-
 assert = require "assert"
 describe 'Pid Creation', ->
+	path = process.env[if (process.platform == 'win32') then 'USERPROFILE' else 'HOME'] + "/.singlerun"
+	pidfile = path + "/index.coffee"
 	argument_base64 = (new Buffer("--testargument").toString('base64'))
 	it 'should create a pid file', (done)->
 		require('child_process').exec __dirname + '/../index.coffee', (err, stdout, sdterr)->
 			throw err if err
 		setTimeout ->
-			require('fs').exists __dirname + '/../index.coffee.pid', (exists)->
-				assert.equal true, exists
+			require('fs').exists pidfile+".pid", (exists)->
+				assert.equal exists, true
 				done()
 		,500
 	it 'should erase the pid file', (done)->
 		setTimeout ->
-			require('fs').exists __dirname + '/../index.coffee.pid', (exists)->
+			require('fs').exists pidfile, (exists)->
 					assert.equal false, exists
 					done()
 		,1000
@@ -20,13 +21,13 @@ describe 'Pid Creation', ->
 		require('child_process').exec __dirname + '/../index.coffee --testargument', (err, stdout, sdterr)->
 			throw err if err
 		setTimeout ->
-			require('fs').exists __dirname + '/../index.coffee'+argument_base64+'.pid', (exists)->
+			require('fs').exists pidfile+argument_base64+'.pid', (exists)->
 				assert.equal true, exists
 				done()
 		,500
 	it 'should erase the pid file with arguments', (done)->
 		setTimeout ->
-			require('fs').exists __dirname + '/../index.coffee'+argument_base64+'.pid', (exists)->
+			require('fs').exists pidfile+argument_base64+'.pid', (exists)->
 				assert.equal false, exists
 				done()
 		,1000
