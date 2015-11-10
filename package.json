@@ -1,6 +1,6 @@
 {
   "name": "singlerun",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Make sure an instance of the current script only runs once.",
   "main": "index.js",
   "scripts": {

@@ -8,7 +8,9 @@ doPid = ([killother, includeparams, debug]..., callback)->
 	fs = require "fs"
 	leargs = ""
 	leargs+=arg for arg,i in process.argv when arg isnt "coffee" and arg isnt "node" and arg isnt __filename if includeparams
-	path = process.env[if (process.platform == 'win32') then 'USERPROFILE' else 'HOME'] + "/.singlerun"
+	homepath = process.env[if (process.platform == 'win32') then 'USERPROFILE' else 'HOME']
+	homepage = "/var/local" if !homepath?
+	path = homepath + "/.singlerun"
 	fs.mkdirSync(path) if !fs.existsSync(path)
 	pidfile = path + "/" + __filename.split('/').pop() + (new Buffer(leargs).toString('base64')) + '.pid'
 	console.log (new Buffer(leargs).toString('base64')) if debug
