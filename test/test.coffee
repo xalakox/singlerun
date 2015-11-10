@@ -13,7 +13,7 @@ describe 'Pid Creation', ->
 		,500
 	it 'should erase the pid file', (done)->
 		setTimeout ->
-			require('fs').exists pidfile, (exists)->
+			require('fs').exists pidfile+'.pid', (exists)->
 					assert.equal false, exists
 					done()
 		,1000
